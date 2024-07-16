@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SigmaCandidateTask.Test", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.Core", "Framework.Core\Framework.Core.csproj", "{543F869D-9C44-48C3-A695-D692A28F54B1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SigmaCandidateTask.Entity", "SigmaCandidateTask.Entity\SigmaCandidateTask.Entity.csproj", "{75AF5472-5624-4E1F-8285-7D036CBEF7AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{543F869D-9C44-48C3-A695-D692A28F54B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{543F869D-9C44-48C3-A695-D692A28F54B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{543F869D-9C44-48C3-A695-D692A28F54B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75AF5472-5624-4E1F-8285-7D036CBEF7AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75AF5472-5624-4E1F-8285-7D036CBEF7AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75AF5472-5624-4E1F-8285-7D036CBEF7AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75AF5472-5624-4E1F-8285-7D036CBEF7AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{1A43B3C6-E044-47EB-B8E5-E16566EF5F3B} = {1DF484C3-BD7B-4039-85EA-29F1C38EADE4}
 		{9D24CB38-3860-48F1-936C-37678771182F} = {EA799C93-3A5E-49D6-B2F2-A6FF1E83FA4C}
 		{543F869D-9C44-48C3-A695-D692A28F54B1} = {8520CFE9-FA69-4116-A4BB-7874043FC7BF}
+		{75AF5472-5624-4E1F-8285-7D036CBEF7AF} = {1DF484C3-BD7B-4039-85EA-29F1C38EADE4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EA980D02-7081-433D-A50A-2EF8724620A6}
