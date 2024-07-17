@@ -42,7 +42,7 @@ namespace SigmaCandidateTask.Application.Services
             }
             else
             {
-                var existingCandidate = await this._candidateRepository.FirstOrDefaultAsync(x => x.Id == model.Id, null);
+                var existingCandidate = await this._candidateRepository.FirstOrDefaultAsync(x => x.Id == model.Id);
                 _mapper.Map(model, existingCandidate);
                 candidate = await _candidateRepository.UpdateAsync(existingCandidate);
             }

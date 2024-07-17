@@ -79,20 +79,12 @@ namespace Framework.DataAccess.Repositories
             return await Task.FromResult(entity);
         }
 
-        public virtual async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, string[] includedNavigationsList = null)
+        public virtual async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
         {
             if (predicate == null) throw new ArgumentNullException(nameof(predicate));
             if (Entities == null) throw new InvalidOperationException("Entities DbSet is not initialized.");
 
             IQueryable<TEntity> query = Entities;
-
-            if (includedNavigationsList != null)
-            {
-                foreach (var navigation in includedNavigationsList)
-                {
-                    query = query.Include(navigation);
-                }
-            }
 
             return await query.FirstOrDefaultAsync(predicate);
         }

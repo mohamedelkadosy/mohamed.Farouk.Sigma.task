@@ -6,9 +6,21 @@ using SigmaCandidateTask.Core.IServices;
 using SigmaCandidateTask.DataAccess.Contexts;
 using SigmaCandidateTask.DataAccess.Repositories;
 using AutoMapper;
+using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 // Add services to the container.
 
@@ -30,8 +42,15 @@ builder.Services.AddScoped<IUnitOfWorkAsync, UnitOfWorkAsync>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
+// Register Serilog's ILogger for dependency injection
+builder.Services.AddSingleton(Log.Logger);
+
 
 var app = builder.Build();
+
+// Register the Exception Handling Middleware
+ app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 
 // Apply any pending migrations on startup
 using (var scope = app.Services.CreateScope())
