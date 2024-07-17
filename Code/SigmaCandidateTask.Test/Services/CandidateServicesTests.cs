@@ -75,8 +75,9 @@ namespace SigmaCandidateTask.Tests.Services
 
             var existingCandidate = new Candidate { Id = 1, Email = "john.doe@example.com" };
 
-            _candidateRepositoryMock.Setup(repo => repo.FirstOrDefaultAsync(It.IsAny<Expression<Func<Candidate, bool>>>()))
-                                    .ReturnsAsync(existingCandidate);
+            _candidateRepositoryMock.Setup(repo => repo.FirstOrDefaultAsync(It.Is<Expression<Func<Candidate, bool>>>(expr =>
+                expr.Compile().Invoke(existingCandidate))))
+                .ReturnsAsync(existingCandidate);
 
             _candidateRepositoryMock.Setup(repo => repo.UpdateAsync(It.IsAny<Candidate>()))
                                     .ReturnsAsync(existingCandidate);
@@ -101,8 +102,9 @@ namespace SigmaCandidateTask.Tests.Services
 
             var existingCandidate = new Candidate { Id = 2, Email = "existing@example.com" };
 
-            _candidateRepositoryMock.Setup(repo => repo.FirstOrDefaultAsync(It.IsAny<Expression<Func<Candidate, bool>>>()))
-                                    .ReturnsAsync(existingCandidate);
+            _candidateRepositoryMock.Setup(repo => repo.FirstOrDefaultAsync(It.Is<Expression<Func<Candidate, bool>>>(expr =>
+                expr.Compile().Invoke(existingCandidate))))
+                .ReturnsAsync(existingCandidate);
 
             // Act & Assert
             var ex = Assert.ThrowsAsync<InvalidOperationException>(() => _candidateServices.ValidateModelAsync(candidateViewModel));
@@ -170,8 +172,9 @@ namespace SigmaCandidateTask.Tests.Services
 
             var existingCandidate = new Candidate { Id = 1, Email = "john.doe@example.com" };
 
-            _candidateRepositoryMock.Setup(repo => repo.FirstOrDefaultAsync(It.IsAny<Expression<Func<Candidate, bool>>>()))
-                                    .ReturnsAsync(existingCandidate);
+            _candidateRepositoryMock.Setup(repo => repo.FirstOrDefaultAsync(It.Is<Expression<Func<Candidate, bool>>>(expr =>
+                expr.Compile().Invoke(existingCandidate))))
+                .ReturnsAsync(existingCandidate);
 
             _candidateRepositoryMock.Setup(repo => repo.UpdateAsync(It.IsAny<Candidate>()))
                                     .ReturnsAsync(existingCandidate);

@@ -13,22 +13,19 @@ namespace SigmaCandidateTask.Application.Services
         private readonly IUnitOfWorkAsync _unitOfWorkAsync;
         private readonly IMapper _mapper;
 
-        public CandidateServices(ICandidateRepositoryAsync candidateRepository, IUnitOfWorkAsync unitOfWorkAsync , IMapper mapper)
+        public CandidateServices(ICandidateRepositoryAsync candidateRepository, IUnitOfWorkAsync unitOfWorkAsync, IMapper mapper)
         {
             _candidateRepository = candidateRepository;
-            _unitOfWorkAsync = unitOfWorkAsync; 
+            _unitOfWorkAsync = unitOfWorkAsync;
             _mapper = mapper;
         }
 
         public async Task ValidateModelAsync(CandidateViewModel model)
         {
-            await Task.Run(() =>
-            {
-                var existEntity = this._candidateRepository.GetAsync(null).Result.FirstOrDefault(entity =>
-                                entity.Email == model.Email  && entity.Id != model.Id);
-                if (existEntity != null)
-                    throw new Exception("This Email is Already exist");
-            });
+            var existEntity = await this._candidateRepository.FirstOrDefaultAsync(entity =>
+                            entity.Email == model.Email && entity.Id != model.Id);
+            if (existEntity != null)
+                throw new InvalidOperationException("This email is already in use.");
         }
         public async Task AddOrUpdateAsync(CandidateViewModel model)
         {
@@ -43,6 +40,8 @@ namespace SigmaCandidateTask.Application.Services
             else
             {
                 var existingCandidate = await this._candidateRepository.FirstOrDefaultAsync(x => x.Id == model.Id);
+                if (existingCandidate == null)
+                    throw new InvalidOperationException("Candidate not found.");
                 _mapper.Map(model, existingCandidate);
                 candidate = await _candidateRepository.UpdateAsync(existingCandidate);
             }

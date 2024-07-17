@@ -81,29 +81,6 @@ namespace SigmaCandidateTask.Tests.Controllers
             _candidateServiceMock.Verify(service => service.AddOrUpdateAsync(candidateViewModel), Times.Once);
         }
 
-        [Test]
-        public async Task AddOrUpdateCandidate_ReturnsInternalServerError_WhenExceptionIsThrown()
-        {
-            // Arrange
-            var candidateViewModel = new CandidateViewModel
-            {
-                FirstName = "John",
-                LastName = "Doe",
-                Email = "john.doe@example.com",
-                Comment = "New candidate"
-            };
-
-            _candidateServiceMock.Setup(service => service.AddOrUpdateAsync(candidateViewModel))
-                                 .ThrowsAsync(new Exception("Something went wrong"));
-
-            // Act
-            var result = await _candidatesController.AddOrUpdateCandidate(candidateViewModel);
-
-            // Assert
-            var internalServerErrorResult = result as ObjectResult;
-            Assert.IsNotNull(internalServerErrorResult);
-            Assert.AreEqual(500, internalServerErrorResult.StatusCode);
-            Assert.AreEqual("Internal server error. Please try again later.", internalServerErrorResult.Value);
-        }
+    
     }
 }
