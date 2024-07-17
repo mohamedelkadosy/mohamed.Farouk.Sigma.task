@@ -19,7 +19,8 @@ jobs:
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock
 
-    steps:
+
+  steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
@@ -29,16 +30,16 @@ jobs:
         dotnet-version: '8.0.x'  # Use the version appropriate for your project
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./Code/SigmaCandidateTask/SigmaCandidateTask.API.csproj
 
     - name: Build
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build ./Code/SigmaCandidateTask/SigmaCandidateTask.API.csproj --no-restore --configuration Release
 
     - name: Run tests
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test ./Code/SigmaCandidateTask/SigmaCandidateTask.API.csproj --no-restore --verbosity normal
 
     - name: Publish
-      run: dotnet publish --no-restore --configuration Release --output ./publish
+      run: dotnet publish ./Code/SigmaCandidateTask/SigmaCandidateTask.API.csproj --no-restore --configuration Release --output ./publish
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
