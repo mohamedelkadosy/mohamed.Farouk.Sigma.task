@@ -1,0 +1,40 @@
+{
+	"info": {
+		"_postman_id": "1129823a-8ede-49b0-81e6-bdcfb6e1ecd7",
+		"name": "Sigma",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6598941"
+	},
+	"item": [
+		{
+			"name": "https://localhost:44338/api/Candidates",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"firstName\": \"mohamed\",\r\n  \"lastName\": \"farouk\",\r\n  \"phoneNumber\": \"01007747101\",\r\n  \"email\": \"mohamed.farouk@smarttechsys.com\",\r\n  \"preferredCallTime\": \"5:30\",\r\n  \"linkedInProfileUrl\": \"https://www.linkedin.com/in/mohamed-farouk-916925160/\",\r\n  \"gitHubProfileUrl\": \"\",\r\n  \"comment\": \"test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44338/api/Candidates",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44338",
+					"path": [
+						"api",
+						"Candidates"
+					]
+				},
+				"description": "AddOrUpdate"
+			},
+			"response": []
+		}
+	]
+}
