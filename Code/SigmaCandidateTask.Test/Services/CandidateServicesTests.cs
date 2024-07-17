@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http.Features;
 using Moq;
 using NUnit.Framework;
 using SigmaCandidateTask.Application.Services;
@@ -32,6 +33,49 @@ namespace SigmaCandidateTask.Tests.Services
 
             _mapper = config.CreateMapper();
             _candidateServices = new CandidateServices(_candidateRepositoryMock.Object, _unitOfWorkMock.Object, _mapper);
+        }
+
+
+        [Test]
+        public async Task ValidateModelAsync_ThrowsException_WhenEmailExists()
+        {
+            // Arrange
+            var candidateViewModel = new CandidateViewModel
+            {
+                Id = 1,
+                Email = "existing@example.com"
+            };
+
+            var existingCandidate = new Candidate { Id = 2, Email = "existing@example.com" };
+
+            _candidateRepositoryMock.Setup(repo => repo.FirstOrDefaultAsync(It.Is<Expression<Func<Candidate, bool>>>(expr =>
+                expr.Compile().Invoke(existingCandidate))))
+                .ReturnsAsync(existingCandidate);
+
+            // Act & Assert
+            var ex = Assert.ThrowsAsync<InvalidOperationException>(() => _candidateServices.ValidateModelAsync(candidateViewModel));
+            Assert.That(ex.Message, Is.EqualTo("This email is already in use."));
+        }
+
+        [Test]
+        public async Task AddOrUpdateAsync_ThrowsException_WhenCandidateNotFoundForUpdate()
+        {
+            // Arrange
+            var candidateViewModel = new CandidateViewModel
+            {
+                Id = 1,
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "john.doe@example.com",
+                Comment = "Updated candidate"
+            };
+
+            _candidateRepositoryMock.Setup(repo => repo.FirstOrDefaultAsync(It.IsAny<Expression<Func<Candidate, bool>>>()))
+                                    .ReturnsAsync((Candidate)null);
+
+            // Act & Assert
+            var ex = Assert.ThrowsAsync<InvalidOperationException>(() => _candidateServices.AddOrUpdateAsync(candidateViewModel));
+            Assert.That(ex.Message, Is.EqualTo("Candidate not found."));
         }
 
         [Test]
@@ -88,48 +132,6 @@ namespace SigmaCandidateTask.Tests.Services
             // Assert
             _candidateRepositoryMock.Verify(repo => repo.UpdateAsync(It.IsAny<Candidate>()), Times.Once);
             _unitOfWorkMock.Verify(uow => uow.CommitAsync(), Times.Once);
-        }
-
-        [Test]
-        public void ValidateModelAsync_ThrowsException_WhenEmailExists()
-        {
-            // Arrange
-            var candidateViewModel = new CandidateViewModel
-            {
-                Id = 1,
-                Email = "existing@example.com"
-            };
-
-            var existingCandidate = new Candidate { Id = 2, Email = "existing@example.com" };
-
-            _candidateRepositoryMock.Setup(repo => repo.FirstOrDefaultAsync(It.Is<Expression<Func<Candidate, bool>>>(expr =>
-                expr.Compile().Invoke(existingCandidate))))
-                .ReturnsAsync(existingCandidate);
-
-            // Act & Assert
-            var ex = Assert.ThrowsAsync<InvalidOperationException>(() => _candidateServices.ValidateModelAsync(candidateViewModel));
-            Assert.That(ex.Message, Is.EqualTo("This email is already in use."));
-        }
-
-        [Test]
-        public void AddOrUpdateAsync_ThrowsException_WhenCandidateNotFoundForUpdate()
-        {
-            // Arrange
-            var candidateViewModel = new CandidateViewModel
-            {
-                Id = 1,
-                FirstName = "John",
-                LastName = "Doe",
-                Email = "john.doe@example.com",
-                Comment = "Updated candidate"
-            };
-
-            _candidateRepositoryMock.Setup(repo => repo.FirstOrDefaultAsync(It.IsAny<Expression<Func<Candidate, bool>>>()))
-                                    .ReturnsAsync((Candidate)null);
-
-            // Act & Assert
-            var ex = Assert.ThrowsAsync<InvalidOperationException>(() => _candidateServices.AddOrUpdateAsync(candidateViewModel));
-            Assert.That(ex.Message, Is.EqualTo("Candidate not found."));
         }
 
         [Test]

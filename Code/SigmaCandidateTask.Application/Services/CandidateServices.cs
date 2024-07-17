@@ -27,6 +27,7 @@ namespace SigmaCandidateTask.Application.Services
             if (existEntity != null)
                 throw new InvalidOperationException("This email is already in use.");
         }
+
         public async Task AddOrUpdateAsync(CandidateViewModel model)
         {
             await this.ValidateModelAsync(model);
