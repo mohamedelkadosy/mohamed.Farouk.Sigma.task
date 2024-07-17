@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SigmaCandidateTask.Core\SigmaCandidateTask.Core.csproj" />
+    <ProjectReference Include="..\SigmaCandidateTask.Domain\SigmaCandidateTask.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>
