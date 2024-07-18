@@ -2,9 +2,11 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: main
+    branches:
+      - main
   pull_request:
-    branches: main
+    branches:
+      - main
 
 jobs:
   build:
@@ -19,31 +21,30 @@ jobs:
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock
 
-
-  steps:
+    steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
     - name: Set up .NET
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: '8.0.x'  # Use the version appropriate for your project
+        dotnet-version: '8.0.x'  
 
     - name: Restore dependencies
-      working-directory: ././Code
-      run: dotnet restore
+      working-directory: ./Code
+      run: dotnet restore ./SigmaCandidateTask/SigmaCandidateTask.API.csproj
 
     - name: Build
-      working-directory: ././Code/
-      run: dotnet build  --no-restore --configuration Release
+      working-directory: ./Code
+      run: dotnet build ./SigmaCandidateTask/SigmaCandidateTask.API.csproj --no-restore --configuration Release
 
     - name: Run tests
-      working-directory: ././Code/
-      run: dotnet test --no-restore --verbosity normal
+      working-directory: ./Code
+      run: dotnet test ./SigmaCandidateTask/SigmaCandidateTask.API.csproj --no-restore --verbosity normal
 
     - name: Publish
-      working-directory: ././Code/
-      run: dotnet publish  --no-restore --configuration Release --output ./publish
+      working-directory: ./Code
+      run: dotnet publish ./SigmaCandidateTask/SigmaCandidateTask.API.csproj --no-restore --configuration Release --output ./publish
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
@@ -57,7 +58,7 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
       with:
-        context: .
-        file: ./Dockerfile
+        context: ./Code
+        file: ./Code/Dockerfile
         push: true
         tags: faroukmk/sigmatask:latest
