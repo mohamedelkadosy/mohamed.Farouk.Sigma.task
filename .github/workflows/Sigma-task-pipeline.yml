@@ -30,20 +30,20 @@ jobs:
         dotnet-version: '8.0.x'  # Use the version appropriate for your project
 
     - name: Restore dependencies
-      working-directory: ./Code/SigmaCandidateTask
-      run: dotnet restore ./SigmaCandidateTask/SigmaCandidateTask.API.csproj
+      working-directory: ././Code
+      run: dotnet restore
 
     - name: Build
-      working-directory: ./Code/SigmaCandidateTask
-      run: dotnet build ./SigmaCandidateTask/SigmaCandidateTask.API.csproj --no-restore --configuration Release
+      working-directory: ././Code/
+      run: dotnet build  --no-restore --configuration Release
 
     - name: Run tests
-      working-directory: ./Code/SigmaCandidateTask
-      run: dotnet test ./SigmaCandidateTask/SigmaCandidateTask.API.csproj --no-restore --verbosity normal
+      working-directory: ././Code/
+      run: dotnet test --no-restore --verbosity normal
 
     - name: Publish
-      working-directory: ./Code/SigmaCandidateTask
-      run: dotnet publish ./SigmaCandidateTask/SigmaCandidateTask.API.csproj --no-restore --configuration Release --output ./publish
+      working-directory: ././Code/
+      run: dotnet publish  --no-restore --configuration Release --output ./publish
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
